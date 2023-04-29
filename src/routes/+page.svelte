@@ -1,0 +1,70 @@
+<script lang="ts">
+	import { onMount } from "svelte";
+	import { currentUser, pb } from "../lib/pocketbase";
+	import LoginForm from "../components/LoginForm.svelte";
+	import type { Record } from "pocketbase";
+
+	let service_hours: Record[] = [];
+	onMount(async () => {
+		console.log("Mounted the home page to the DOM!");
+		service_hours = await pb.collection("service_hours").getFullList();
+		console.log("Service hours now: ", service_hours);
+		pb.collection("service_hours").subscribe("*", async (param) => {
+			if (!$currentUser) {
+				return;
+			}
+			if ($currentUser.id == param.record.parent_user) {
+				// Since this user can only see the service_hours created by THEMSELVES, this check is not neccesary,
+				// but just in case, make sure this service_hours entry is by THIS user
+
+				service_hours = await pb
+					.collection("service_hours")
+					.getFullList();
+				console.log("Full service hours: ", service_hours);
+			}
+		});
+	});
+
+	function signOut() {
+		pb.authStore.clear();
+	}
+
+	async function createServiceHours() {
+		console.log("Clicked");
+		if (!$currentUser) {
+			return;
+		}
+		const current_user_id = $currentUser.id;
+		const data = {
+			description: `Wow this is a cool desription`,
+			parent_user: current_user_id,
+		};
+		const createdHours = await pb.collection("service_hours").create(data);
+		// console.log("Created service hours", createdHours);
+	}
+</script>
+
+<h1>Home</h1>
+{#if $currentUser}
+	<p>
+		Signed in as {$currentUser.name}
+	</p>
+	<button on:click={signOut}>Sign Out</button>
+	<button on:click={createServiceHours}>Create Service Hours</button>
+	<section>
+		{#each service_hours as item}
+			<div>
+				<p>Id: {item.id}</p>
+				<p>{item.description}</p>
+			</div>
+		{/each}
+	</section>
+{:else}
+	<LoginForm />
+{/if}
+
+<style>
+	h1 {
+		font-size: 3rem;
+	}
+</style>
