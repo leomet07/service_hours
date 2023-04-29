@@ -11,7 +11,9 @@
 	let service_hours: DBRecievedServiceHour[] = [];
 	onMount(async () => {
 		console.log("Mounted the home page to the DOM!");
-		service_hours = await pb.collection("service_hours").getFullList();
+		service_hours = await pb
+			.collection("service_hours")
+			.getFullList({ sort: "-created" });
 		console.log("Service hours now: ", service_hours);
 
 		let unsubscribefunc: UnsubscribeFunc | undefined;
@@ -24,7 +26,9 @@
 				return;
 			}
 
-			service_hours = await pb.collection("service_hours").getFullList();
+			service_hours = await pb
+				.collection("service_hours")
+				.getFullList({ sort: "-created" });
 			unsubscribefunc = await pb
 				.collection("service_hours")
 				.subscribe("*", async (param) => {
@@ -37,7 +41,7 @@
 
 						service_hours = await pb
 							.collection("service_hours")
-							.getFullList();
+							.getFullList({ sort: "-created" });
 						console.log("Full service hours: ", service_hours);
 					}
 				});
