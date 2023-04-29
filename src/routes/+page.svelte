@@ -2,26 +2,45 @@
 	import { onMount } from "svelte";
 	import { currentUser, pb } from "../lib/pocketbase";
 	import LoginForm from "../components/LoginForm.svelte";
-	import type { Record } from "pocketbase";
+	import type { Record, UnsubscribeFunc } from "pocketbase";
+	import type {
+		DBRecievedServiceHour,
+		RecievedServiceHour,
+	} from "../db_types";
 
-	let service_hours: Record[] = [];
+	let service_hours: DBRecievedServiceHour[] = [];
 	onMount(async () => {
 		console.log("Mounted the home page to the DOM!");
 		service_hours = await pb.collection("service_hours").getFullList();
 		console.log("Service hours now: ", service_hours);
-		pb.collection("service_hours").subscribe("*", async (param) => {
-			if (!$currentUser) {
+
+		let unsubscribefunc: UnsubscribeFunc | undefined;
+		currentUser.subscribe(async (newCurrentUser) => {
+			// If not logged in
+			if (!newCurrentUser) {
+				if (typeof unsubscribefunc == "function") {
+					await unsubscribefunc();
+				}
 				return;
 			}
-			if ($currentUser.id == param.record.parent_user) {
-				// Since this user can only see the service_hours created by THEMSELVES, this check is not neccesary,
-				// but just in case, make sure this service_hours entry is by THIS user
 
-				service_hours = await pb
-					.collection("service_hours")
-					.getFullList();
-				console.log("Full service hours: ", service_hours);
-			}
+			service_hours = await pb.collection("service_hours").getFullList();
+			unsubscribefunc = await pb
+				.collection("service_hours")
+				.subscribe("*", async (param) => {
+					if (!$currentUser) {
+						return;
+					}
+					if ($currentUser.id == param.record.parent_user) {
+						// Since this user can only see the service_hours created by THEMSELVES, this check is not neccesary,
+						// but just in case, make sure this service_hours entry is by THIS user
+
+						service_hours = await pb
+							.collection("service_hours")
+							.getFullList();
+						console.log("Full service hours: ", service_hours);
+					}
+				});
 		});
 	});
 
@@ -32,6 +51,7 @@
 	async function createServiceHours() {
 		console.log("Clicked");
 		if (!$currentUser) {
+			console.log("Not signed in");
 			return;
 		}
 		const current_user_id = $currentUser.id;
@@ -40,7 +60,7 @@
 			parent_user: current_user_id,
 		};
 		const createdHours = await pb.collection("service_hours").create(data);
-		// console.log("Created service hours", createdHours);
+		console.log("Created service hours", createdHours);
 	}
 </script>
 
