@@ -15,6 +15,8 @@
 >
 	<h1>Register</h1>
 	<div>
+		<input type="text" name="name" placeholder="Name" />
+		<br />
 		<input type="email" name="email" placeholder="Email" />
 		<input type="password" name="password" placeholder="Password" />
 		<input

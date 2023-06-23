@@ -7,6 +7,7 @@ export const actions: Actions = {
 			email: string;
 			password: string;
 			passwordConfirm: string;
+			name: string;
 		};
 
 		try {
