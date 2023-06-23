@@ -9,7 +9,6 @@ export const actions: Actions = {
 		};
 
 		try {
-			console.log("Data to login with: ", data);
 			await locals.pb
 				.collection("users")
 				.authWithPassword(data.email, data.password);

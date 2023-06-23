@@ -5,7 +5,6 @@
 
 <form
 	method="POST"
-	class="card"
 	use:enhance={() => {
 		return async ({ result }) => {
 			pb.authStore.loadFromCookie(document.cookie);
