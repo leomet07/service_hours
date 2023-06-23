@@ -25,6 +25,7 @@
 				}
 				return;
 			}
+			console.log("Export to cookie: ,", pb.authStore.exportToCookie());
 
 			service_hours = await pb
 				.collection("service_hours")
@@ -73,7 +74,7 @@
 	<p>
 		Signed in as {$currentUser.name}
 	</p>
-	<button on:click={signOut}>Sign Out</button>
+	<!-- <button on:click={signOut}>Sign Out</button> -->
 	<button on:click={createServiceHours}>Create Service Hours</button>
 	<section>
 		{#each service_hours as item}
@@ -84,7 +85,7 @@
 		{/each}
 	</section>
 {:else}
-	<LoginForm />
+	<!-- <LoginForm /> -->
 {/if}
 
 <style>
