@@ -12,7 +12,7 @@
 	<a href="/">Home</a>
 	<a href="/about">About</a>
 	{#if $currentUser}
-		<button on:click={logout}>Logout</button>
+		<a href="/" on:click={logout}>Logout</a>
 	{:else}
 		<a href="/login">Login</a>
 		<a href="/register">Register</a>

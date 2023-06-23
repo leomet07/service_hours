@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>My SvelteKit App</title>
+	<title>Service Hours App</title>
 </svelte:head>
 
 <div class="app">
