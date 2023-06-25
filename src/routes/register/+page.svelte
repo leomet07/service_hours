@@ -3,26 +3,65 @@
 	import { pb } from "$lib/pocketbase";
 </script>
 
-<form
-	method="POST"
-	use:enhance={() => {
-		return async ({ result }) => {
-			pb.authStore.loadFromCookie(document.cookie);
-			await applyAction(result);
-		};
-	}}
->
+<main>
 	<h1>Register</h1>
-	<div>
-		<input type="text" name="name" placeholder="Name" />
+	<form
+		method="POST"
+		use:enhance={() => {
+			return async ({ result }) => {
+				pb.authStore.loadFromCookie(document.cookie);
+				await applyAction(result);
+			};
+		}}
+	>
+		<label for="name">Enter your name:</label>
+		<input type="text" name="name" placeholder="John Smith" />
 		<br />
-		<input type="email" name="email" placeholder="Email" />
-		<input type="password" name="password" placeholder="Password" />
+		<label for="email">Enter your email:</label>
+		<input type="email" name="email" placeholder="email@stuy.edu" />
+		<br />
+		<label for="password">Enter a strong password:</label>
+		<input
+			type="password"
+			name="password"
+			placeholder="a_long_and_secure_password"
+		/>
+		<br />
+		<label for="passwordConfirm">Enter the password again:</label>
 		<input
 			type="password"
 			name="passwordConfirm"
-			placeholder="Confirm password"
+			placeholder="Confirm the password"
 		/>
 		<button>Register</button>
-	</div>
-</form>
+	</form>
+</main>
+
+<style scoped>
+	main {
+		text-align: center;
+		display: block;
+	}
+
+	h1 {
+		font-size: 3rem;
+	}
+
+	form {
+		max-width: 400px;
+		margin-top: 10px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	form input {
+		margin-top: 2px;
+		width: 100%;
+	}
+
+	form label {
+		font-size: 1.4rem;
+		font-weight: bold;
+		text-align: left;
+	}
+</style>

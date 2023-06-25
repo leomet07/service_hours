@@ -18,11 +18,7 @@
 		<input type="email" name="email" placeholder="email@stuy.edu" />
 		<br />
 		<label for="email">Enter your password:</label>
-		<input
-			type="password"
-			name="password"
-			placeholder="a_secure_password_or_passphrase"
-		/>
+		<input type="password" name="password" placeholder="Your password" />
 		<br />
 		<button>Log in</button>
 	</form>
