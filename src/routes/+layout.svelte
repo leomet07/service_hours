@@ -23,5 +23,7 @@
 
 	#page_parent {
 		min-height: calc(100vh - 50px);
+		width: 95vw;
+		margin: auto;
 	}
 </style>

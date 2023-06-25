@@ -1,12 +1,7 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-	import { currentUser, pb } from "$lib/pocketbase";
-
-	async function logout() {
-		pb.authStore.clear();
-		await goto("/");
-	}
+	import { currentUser } from "$lib/pocketbase";
+	import UserMenu from "./UserMenu.svelte";
 </script>
 
 <nav>
@@ -14,16 +9,21 @@
 	<a
 		href="/about"
 		id="about_link"
-		class:active={$page.url.pathname === "/about"}>About</a
+		class:active={$page.url.pathname === "/about"}
 	>
+		About
+	</a>
 	{#if $currentUser}
-		<a href="/" on:click={logout}>Logout</a>
+		<div id="user_menu_parent">
+			<UserMenu />
+		</div>
 	{:else}
-		<a href="/login" class:active={$page.url.pathname === "/login"}>Login</a
-		>
-		<a href="/register" class:active={$page.url.pathname === "/register"}
-			>Register</a
-		>
+		<a href="/login" class:active={$page.url.pathname === "/login"}>
+			Login
+		</a>
+		<a href="/register" class:active={$page.url.pathname === "/register"}>
+			Register
+		</a>
 	{/if}
 </nav>
 
@@ -34,10 +34,14 @@
 		height: 100%;
 		display: flex;
 		align-items: center;
-		font-size: 1.5rem;
 	}
 
 	nav a {
+		font-size: 1.5rem;
+	}
+
+	nav a,
+	#user_menu_parent {
 		margin: 10px;
 	}
 
