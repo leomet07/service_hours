@@ -26,7 +26,7 @@
 	<h2>You aren't logged in. <a href="/login">Login please.</a></h2>
 {/if}
 
-<style>
+<style scoped>
 	h1 {
 		font-size: 3rem;
 	}
