@@ -21,6 +21,9 @@
 		<input type="password" name="password" placeholder="Your password" />
 		<br />
 		<button>Log in</button>
+		<p id="suggest_register">
+			Don't have an account? <a href="/register">Register for one.</a>
+		</p>
 	</form>
 </main>
 
@@ -50,5 +53,14 @@
 		font-size: 1.4rem;
 		font-weight: bold;
 		text-align: left;
+	}
+
+	#suggest_register {
+		margin-top: 15px;
+		text-align: right;
+	}
+
+	#suggest_register a {
+		text-decoration: underline;
 	}
 </style>
