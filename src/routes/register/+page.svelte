@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { applyAction, enhance } from "$app/forms";
+	import FormIssues from "$lib/components/FormIssues.svelte";
 	import { pb } from "$lib/pocketbase";
+	import type { ActionData } from "./$types";
+
+	export let form: ActionData;
 </script>
 
 <main>
@@ -15,10 +19,20 @@
 		}}
 	>
 		<label for="name">Enter your name:</label>
-		<input type="text" name="name" placeholder="John Smith" />
+		<input
+			type="text"
+			name="name"
+			placeholder="John Smith"
+			value={form?.formDataObject?.name ?? ""}
+		/>
 		<br />
 		<label for="email">Enter your email:</label>
-		<input type="email" name="email" placeholder="email@stuy.edu" />
+		<input
+			type="email"
+			name="email"
+			placeholder="email@stuy.edu"
+			value={form?.formDataObject?.email ?? ""}
+		/>
 		<br />
 		<label for="password">Enter a strong password:</label>
 		<input
@@ -33,6 +47,7 @@
 			name="passwordConfirm"
 			placeholder="Confirm the password"
 		/>
+		<FormIssues issues={form?.issues} />
 		<button>Register</button>
 	</form>
 </main>

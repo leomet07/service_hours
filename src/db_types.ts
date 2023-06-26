@@ -23,12 +23,13 @@ const DBServiceHourSchema = ServiceHourSchema.extend({
 }).merge(baseDBEntrySchema);
 
 export const UserSchema = z.object({
-	username: z.string().min(1).max(32), // auto generated in the DB
 	email: z.string().email(),
 	name: z.string().min(3).max(48),
 	avatar: z.string().optional(),
 });
-const DBUserSchema = UserSchema.merge(baseDBEntrySchema);
+const DBUserSchema = UserSchema.extend({
+	username: z.string().min(1).max(32), // auto generated in the DB
+}).merge(baseDBEntrySchema);
 
 type RecievedServiceHour = z.infer<typeof ServiceHourSchema>;
 export type DBRecievedServiceHour = z.infer<typeof DBServiceHourSchema>;

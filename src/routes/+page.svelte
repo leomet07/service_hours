@@ -1,4 +1,5 @@
 <script lang="ts">
+	import FormIssues from "$lib/components/FormIssues.svelte";
 	import { currentUser } from "../lib/pocketbase";
 	import type { PageData, ActionData } from "./$types";
 
@@ -32,12 +33,7 @@
 				required
 			/>
 			<br />
-			{#if form?.issues}
-				{#each form.issues as issue}
-					<h3>Field: {issue.path[0]}</h3>
-					<p>{issue.message}</p>
-				{/each}
-			{/if}
+			<FormIssues issues={form?.issues} />
 			<button>Create Service Hours</button>
 		</form>
 

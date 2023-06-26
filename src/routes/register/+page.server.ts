@@ -1,9 +1,11 @@
 import { redirect } from "@sveltejs/kit";
 import type { Actions } from "./$types";
+import { UserSchema } from "../../db_types";
+import handleServerError from "$lib/handleServerError";
 
 export const actions: Actions = {
 	default: async ({ locals, request }) => {
-		const data = Object.fromEntries(await request.formData()) as {
+		const formDataObject = Object.fromEntries(await request.formData()) as {
 			email: string;
 			password: string;
 			passwordConfirm: string;
@@ -11,15 +13,22 @@ export const actions: Actions = {
 		};
 
 		try {
-			await locals.pb.collection("users").create(data);
+			UserSchema.parse(formDataObject);
+
+			await locals.pb.collection("users").create(formDataObject);
 			await locals.pb
 				.collection("users")
-				.authWithPassword(data.email, data.password);
-		} catch (e) {
-			console.error(e);
-			throw e;
-		}
+				.authWithPassword(
+					formDataObject.email,
+					formDataObject.password
+				);
+			throw redirect(303, "/");
+		} catch (e: any) {
+			let return_data: any = formDataObject;
+			delete return_data.password;
+			delete return_data.passwordConfirm; // NEVER SEND BACK THE PASSWORD
 
-		throw redirect(303, "/");
+			return handleServerError(e, formDataObject);
+		}
 	},
 };
