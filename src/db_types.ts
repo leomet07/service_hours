@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+// The base for any document in pocketbase
+const baseDBEntrySchema = z.object({
+	id: z.string().length(15),
+	created: z.string().datetime(),
+	updated: z.string().datetime(),
+	collectionId: z.string().length(15),
+	collectionName: z.string(),
+});
+
 export const ServiceHourSchema = z.object({
 	title: z.string().min(3).max(64),
 	description: z.string().max(4000).optional(),
@@ -11,13 +20,18 @@ export const ServiceHourSchema = z.object({
 
 const DBServiceHourSchema = ServiceHourSchema.extend({
 	parent_user: z.string().length(15),
-	id: z.string().length(15),
-	name: z.string().min(3).max(48),
-	created: z.string().datetime(),
-	updated: z.string().datetime(),
-	collectionId: z.string().length(15),
-	collectionName: z.string(),
-});
+}).merge(baseDBEntrySchema);
 
-export type RecievedServiceHour = z.infer<typeof ServiceHourSchema>;
+export const UserSchema = z.object({
+	username: z.string().min(1).max(32), // auto generated in the DB
+	email: z.string().email(),
+	name: z.string().min(3).max(48),
+	avatar: z.string().optional(),
+});
+const DBUserSchema = UserSchema.merge(baseDBEntrySchema);
+
+type RecievedServiceHour = z.infer<typeof ServiceHourSchema>;
 export type DBRecievedServiceHour = z.infer<typeof DBServiceHourSchema>;
+
+type RecievedUser = z.infer<typeof UserSchema>;
+export type DBRecievedUser = z.infer<typeof DBUserSchema>;
