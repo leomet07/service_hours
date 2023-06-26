@@ -1,7 +1,7 @@
 import { error, fail } from "@sveltejs/kit";
 import type { PageServerLoad, Actions } from "./$types";
 import { ServiceHourSchema, type DBRecievedServiceHour } from "../db_types";
-import type { ZodError } from "zod";
+import handleServerError from "$lib/handleServerError";
 
 // Get the data, for page load
 export const load = (async ({ params, locals }) => {
@@ -43,14 +43,7 @@ export const actions: Actions = {
 			) as DBRecievedServiceHour;
 		} catch (e: any) {
 			console.error("Could not create service hours", JSON.stringify(e));
-			if (e.name == "ZodError") {
-				let fail_body = {
-					formDataObject: formDataObject,
-					issues: (e as ZodError).issues,
-				};
-				return fail(400, fail_body);
-			}
-			throw e;
+			return handleServerError(e, formDataObject);
 		}
 	},
 } satisfies Actions;
