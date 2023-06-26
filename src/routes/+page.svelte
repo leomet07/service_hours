@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { currentUser } from "../lib/pocketbase";
-	import type { PageData } from "./$types";
+	import type { PageData, ActionData } from "./$types";
 
 	export let data: PageData;
+	export let form: ActionData;
 </script>
 
 <main>
@@ -13,6 +14,7 @@
 				type="text"
 				name="title"
 				placeholder="Enter a title..."
+				value={form?.formDataObject?.title ?? ""}
 				required
 			/>
 			<br />
@@ -20,10 +22,22 @@
 				type="text"
 				name="description"
 				placeholder="Enter a description..."
+				value={form?.formDataObject?.description ?? ""}
 			/>
 			<br />
-			<input type="number" name="num_of_hours" placeholder="1" required />
+			<input
+				type="number"
+				name="num_of_hours"
+				value={form?.formDataObject?.num_of_hours ?? 1}
+				required
+			/>
 			<br />
+			{#if form?.issues}
+				{#each form.issues as issue}
+					<h3>Field: {issue.path[0]}</h3>
+					<p>{issue.message}</p>
+				{/each}
+			{/if}
 			<button>Create Service Hours</button>
 		</form>
 

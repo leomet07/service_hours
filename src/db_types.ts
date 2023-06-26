@@ -5,7 +5,7 @@ export const ServiceHourSchema = z.object({
 	description: z.string().max(4000).optional(),
 	num_of_hours: z.preprocess(
 		(a) => parseInt(z.string().parse(a), 10),
-		z.number().positive().max(1000)
+		z.number().min(0.5).max(1000)
 	),
 });
 
