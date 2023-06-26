@@ -1,8 +1,12 @@
 import { z } from "zod";
 
-const ServiceHourSchema = z.object({
+export const ServiceHourSchema = z.object({
 	title: z.string().min(3).max(64),
-	description: z.string().min(3).max(256),
+	description: z.string().max(4000).optional(),
+	num_of_hours: z.preprocess(
+		(a) => parseInt(z.string().parse(a), 10),
+		z.number().positive().max(1000)
+	),
 });
 
 const DBServiceHourSchema = ServiceHourSchema.extend({
