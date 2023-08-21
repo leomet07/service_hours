@@ -10,17 +10,17 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.0.1",
-		"@sveltejs/kit": "^1.15.9",
-		"svelte": "^3.58.0",
-		"svelte-check": "^3.2.0",
-		"tslib": "^2.5.0",
-		"typescript": "^5.0.4",
-		"vite": "^4.3.3"
+		"@sveltejs/adapter-auto": "^2.1.0",
+		"@sveltejs/kit": "^1.22.6",
+		"svelte": "^4.2.0",
+		"svelte-check": "^3.5.0",
+		"tslib": "^2.6.2",
+		"typescript": "^5.1.6",
+		"vite": "^4.4.9"
 	},
 	"type": "module",
 	"dependencies": {
-		"pocketbase": "^0.14.3",
-		"zod": "^3.21.4"
+		"pocketbase": "^0.16.0",
+		"zod": "^3.22.2"
 	}
 }
